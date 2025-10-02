@@ -14,27 +14,15 @@ permissions:
 env:
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
+  WORKDIR: environment/production
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    # Two roots to run
-      matrix:
-        workdir:
-          - environment/production
-
-    name: Apply (${{ matrix.workdir }})
+    name: Apply (${{ env.WORKDIR }})
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Sanity
-        run: |
-          echo "Event: ${{ github.event_name }}"
-          echo "Workdir: ${{ matrix.workdir }}"
-          echo "PWD before cd:" && pwd
 
       - name: Authenticate to GCP (Service Account JSON)
         uses: google-github-actions/auth@v2
@@ -51,23 +39,18 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform Init
-        run: terraform -chdir="${{ matrix.workdir }}" init -input=false
+        working-directory: ${{ env.WORKDIR }}
+        run: terraform init -input=false
 
       - name: Terraform Validate
-        run: terraform -chdir="${{ matrix.workdir }}" validate
+        working-directory: ${{ env.WORKDIR }}
+        run: terraform validate
 
       - name: Terraform Plan
-        run: terraform -chdir="${{ matrix.workdir }}" plan -out=tfplan.out -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
-
-      # Optional: comment this whole step out if you don’t need artifacts
-      - name: Upload plan on PRs
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: "tf-plan-${{ matrix.workdir }}"
-          path: "${{ matrix.workdir }}/tfplan.out"
-        continue-on-error: true
+        working-directory: ${{ env.WORKDIR }}
+        run: terraform plan -out=tfplan.out -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
 
       - name: Terraform Apply (push only)
         if: github.event_name == 'push'
-        run: terraform -chdir="${{ matrix.workdir }}" apply -input=false tfplan.out
+        working-directory: ${{ env.WORKDIR }}
+        run: terraform apply -input=false tfplan.out
