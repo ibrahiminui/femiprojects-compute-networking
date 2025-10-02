@@ -8,7 +8,7 @@ resource "google_compute_network" "compute_network" {
 }
 
 resource "google_compute_network" "compute_network_new" {
-  name    = teting-networks
+  name    = "testing-networks"
   project = var.project_id
 
   auto_create_subnetworks = true
