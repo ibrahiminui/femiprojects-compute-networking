@@ -14,22 +14,15 @@ permissions:
 env:
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
+  WORKDIR: environment/production
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    # Two roots to run
-      matrix:
-        workdir:
-          - environment/production
-
-    name: Apply (${{ matrix.workdir }})
+    name: Apply (${{ env.WORKDIR }})
 
     steps:
       - uses: actions/checkout@v4
-
 
       - name: Authenticate to GCP (Service Account JSON)
         uses: google-github-actions/auth@v2
@@ -46,15 +39,18 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform Init
+        working-directory: ${{ env.WORKDIR }}
         run: terraform init -input=false
 
       - name: Terraform Validate
+        working-directory: ${{ env.WORKDIR }}
         run: terraform validate
 
       - name: Terraform Plan
+        working-directory: ${{ env.WORKDIR }}
         run: terraform plan -out=tfplan.out -input=false -var="project_id=${{ secrets.GCP_PROJECT_ID }}"
-
 
       - name: Terraform Apply (push only)
         if: github.event_name == 'push'
+        working-directory: ${{ env.WORKDIR }}
         run: terraform apply -input=false tfplan.out
