@@ -19,7 +19,7 @@ env:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    name: Apply (${{ env.WORKDIR }})
+    name: Apply (environment/production)
 
     steps:
       - uses: actions/checkout@v4
