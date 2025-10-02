@@ -1,12 +1,12 @@
 
-/*
-resource "google_compute_network" "this" {
+
+resource "google_compute_network" "compute_network" {
   name    = var.network_name
   project = var.project_id
 
   auto_create_subnetworks = false
 }
-*/
+
 /*
 
 resource "google_compute_subnetwork" "this" {
