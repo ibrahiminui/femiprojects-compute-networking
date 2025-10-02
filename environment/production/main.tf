@@ -7,13 +7,6 @@ resource "google_compute_network" "compute_network" {
   auto_create_subnetworks = false
 }
 
-resource "google_compute_network" "compute_network_new" {
-  name    = "testing-networks"
-  project = var.project_id
-
-  auto_create_subnetworks = true
-}
-
 /*
 
 resource "google_compute_subnetwork" "this" {
