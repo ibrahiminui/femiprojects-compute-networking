@@ -1,5 +1,5 @@
 
-
+/*
 resource "google_compute_network" "compute_network" {
   name    = var.network_name
   project = var.project_id
@@ -46,3 +46,4 @@ resource "google_compute_subnetwork" "gke_subnet" {
     ip_cidr_range = "10.5.0.0/20"
   }
 }
+*/
