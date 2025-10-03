@@ -22,15 +22,27 @@ resource "google_compute_subnetwork" "compute_subnet" {
   private_ip_google_access = true
 
 }
-/*
-  dynamic "secondary_ip_range" {
-    for_each = each.value.secondary_ranges
-    iterator = range
 
-    content {
-      range_name    = range.key
-      ip_cidr_range = range.value
-    }
+resource "google_compute_subnetwork" "gke_subnet" {
+  provider = google-beta
+
+  project = var.project_id
+  network = google_compute_network.compute_network.name
+
+  name          = "gke-us-west2-subnet"
+  ip_cidr_range = "10.0.1.0/24"
+  region        = var.region
+
+  private_ip_google_access = true
+
+
+  secondary_ip_range {
+    range_name    = "gke-us-west2-subnet-pods"
+    ip_cidr_range = "10.4.0.0/16"
+  }
+
+  secondary_ip_range {
+    range_name    = "gke-us-west2-subnet-services"
+    ip_cidr_range = "10.5.0.0/20"
   }
 }
-*/
