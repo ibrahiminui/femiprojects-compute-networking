@@ -12,7 +12,7 @@ resource "google_container_cluster" "us-west2-gke-cluster" {
   networking_mode          = "VPC_NATIVE"
   network                  = var.shared-vpc-network
   subnetwork               = var.shared-vpc-subnetwork
-  deletion_protection = false
+  deletion_protection      = false
 
   ip_allocation_policy {
     cluster_secondary_range_name  = "gke-us-west2-subnet-pods"
