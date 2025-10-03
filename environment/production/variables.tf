@@ -10,6 +10,12 @@ variable "project_id" {
   type        = string
 }
 
+variable "gke-project" {
+  description = "The GCP project you want to manage"
+  default     = "global-web-server-473500"
+  type        = string
+}
+
 variable "region" {
   type        = string
   description = "Default Google Cloud region"
