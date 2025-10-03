@@ -37,7 +37,6 @@ resource "google_compute_firewall" "google-healthcheck" {
 
   allow {
     protocol = "tcp"
-    ports    = []
   }
 
   direction = "INGRESS"
