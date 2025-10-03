@@ -1,6 +1,6 @@
 variable "network_name" {
   description = "The GCP project you want to manage"
-  default     = "compute-us-west2-subnet"
+  default     = "compute-us-west2-network"
   type        = string
 }
 

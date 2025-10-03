@@ -1,5 +1,5 @@
 
-/*
+
 resource "google_compute_network" "compute_network" {
   name    = var.network_name
   project = var.project_id
@@ -7,7 +7,7 @@ resource "google_compute_network" "compute_network" {
   auto_create_subnetworks = false
 }
 
-
+/*
 
 resource "google_compute_subnetwork" "compute_subnet" {
   provider = google-beta
@@ -47,3 +47,4 @@ resource "google_compute_subnetwork" "gke_subnet" {
   }
 }
 */
+
