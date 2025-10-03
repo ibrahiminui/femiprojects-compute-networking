@@ -11,7 +11,7 @@ resource "google_container_cluster" "us-west2-gke-cluster" {
   initial_node_count       = 1
   networking_mode          = "VPC_NATIVE"
   network                  = google_compute_network.compute_network.name
-  subnetwork               = google_compute_subnetwork.gke_subnet.name
+  subnetwork               = var.shared-vpc-network
 
   ip_allocation_policy {
     cluster_secondary_range_name  = "gke-us-west2-subnet-pods"

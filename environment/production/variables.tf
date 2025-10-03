@@ -21,6 +21,12 @@ variable "region" {
   description = "Default Google Cloud region"
   default     = "us-west2"
 }
+
+variable "shared-vpc-network" {
+  type        = string
+  description = "shared vpc gke network"
+  default     = "projects/global-shared-networking/regions/us-west2/subnetworks/gke-us-west2-subnet"
+}
 /*
 
 
