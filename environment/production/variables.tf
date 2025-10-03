@@ -10,16 +10,13 @@ variable "project_id" {
   type        = string
 }
 
-/*
-variable "environment" {
-  description = "Which environment is being configured."
-  type        = string
-}
-
 variable "region" {
   type        = string
   description = "Default Google Cloud region"
+  default = "us-west2"
 }
+/*
+
 
 variable "service_account" {
   type        = string
