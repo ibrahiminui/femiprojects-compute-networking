@@ -13,7 +13,7 @@ variable "project_id" {
 variable "region" {
   type        = string
   description = "Default Google Cloud region"
-  default = "us-west2"
+  default     = "us-west2"
 }
 /*
 
