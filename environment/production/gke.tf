@@ -10,8 +10,8 @@ resource "google_container_cluster" "us-west2-gke-cluster" {
   remove_default_node_pool = true
   initial_node_count       = 1
   networking_mode          = "VPC_NATIVE"
-  network                  = google_compute_network.compute_network.name
-  subnetwork               = var.shared-vpc-network
+  network                  = var.shared-vpc-network
+  subnetwork               = var.shared-vpc-subnetwork
 
   ip_allocation_policy {
     cluster_secondary_range_name  = "gke-us-west2-subnet-pods"
