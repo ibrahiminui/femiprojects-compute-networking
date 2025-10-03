@@ -10,7 +10,7 @@ resource "google_compute_firewall" "allow-ssh" {
     ports    = ["22"]
   }
 
-  direction   = "INGRESS"
+  direction = "INGRESS"
 }
 
 resource "google_compute_firewall" "allow-http" {
@@ -25,7 +25,7 @@ resource "google_compute_firewall" "allow-http" {
     ports    = ["80"]
   }
 
-  direction   = "INGRESS"
+  direction = "INGRESS"
 }
 
 resource "google_compute_firewall" "google-healthcheck" {
@@ -40,6 +40,6 @@ resource "google_compute_firewall" "google-healthcheck" {
     ports    = []
   }
 
-  direction   = "INGRESS"
+  direction = "INGRESS"
 
 }
