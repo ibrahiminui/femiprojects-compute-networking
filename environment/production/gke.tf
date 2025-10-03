@@ -22,7 +22,7 @@ resource "google_container_cluster" "us-west2-gke-cluster" {
 resource "google_container_node_pool" "us-west2-gke-node-pool" {
   name       = "us-west2-gke-node-pool"
   location   = "location = var.region"
-  cluster    = google_container_cluster.primary.us-west2-gke
+  cluster    = google_container_cluster.us-west2-gke-cluster.name
   node_count = 1
   project    = var.gke-project
 
