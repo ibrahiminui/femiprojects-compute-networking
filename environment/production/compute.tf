@@ -77,13 +77,10 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
       command -v gsutil >/dev/null 2>&1 || { echo "[ERROR] gsutil missing after install"; exit 1; }
 
       # Fetch installer from GCS (requires VM SA read perms)
-      BUCKET="gs://webserver-app"
-      OBJECT="setup-web.sh"
-      retry gsutil cp "${BUCKET}/${OBJECT}" .
+      retry gsutil cp "webserver-app/setup-web.sh .
 
-      chmod +x "./${OBJECT}"
-      echo "[INFO] Running ${OBJECT}..."
-      "./${OBJECT}"
+      chmod +x setup-web.sh
+      ./setup-web.sh
 
       echo "[INFO] Startup script finished at $(date)"
     EOT
