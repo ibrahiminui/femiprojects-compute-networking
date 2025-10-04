@@ -1,5 +1,5 @@
 
-
+/*
 # -----------------------------
 # Instance Template
 # -----------------------------
@@ -163,3 +163,5 @@ resource "google_compute_global_forwarding_rule" "web_fr" {
   port_range            = "80"
   target                = google_compute_target_http_proxy.web_proxy.self_link
 }
+
+*/
