@@ -55,7 +55,7 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
             echo "[ERROR] Command failed after $n attempts: $*"
             return 1
           fi
-          echo "[WARN] Command failed. Attempt $n/$max. Retrying in ${delay}s..."
+          echo "[WARN] Command failed. Attempt $n/$max. Retrying in $${delay}s..."
           sleep "$delay"
         done
       }
