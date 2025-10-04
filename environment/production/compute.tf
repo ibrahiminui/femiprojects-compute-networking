@@ -1,9 +1,9 @@
 
-/*
+
 # -----------------------------
 # Instance Template
 # -----------------------------
-resource "google_compute_instance_template" "webserver-instance-template" {
+resource "google_compute_region_instance_template" "webserver-instance-template" {
   name         = "global-webserver-instance-template"
   machine_type = "e2-medium"
   region       = "us-west2"
@@ -164,4 +164,3 @@ resource "google_compute_global_forwarding_rule" "web_fr" {
   target                = google_compute_target_http_proxy.web_proxy.self_link
 }
 
-*/
