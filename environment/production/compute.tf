@@ -52,3 +52,50 @@ resource "google_compute_instance_template" "webserver-instance-template" {
   }
 }
 
+
+# -----------------------------
+# Regional Managed Instance Group
+# -----------------------------
+resource "google_compute_region_instance_group_manager" "webserver-us-west2-mig" {
+  name               = "webserver-mig-us-west2"
+  region             = "us-west2"
+  base_instance_name = "web"
+  version {
+    instance_template = google_compute_instance_template.webserver-instance-template.self_link
+    name              = "primary"
+  }
+
+  # Start with 3; autoscaler will manage between 3 and 5
+  target_size = 3
+
+  # Named port so the backend service can reference "http"
+  named_port {
+    name = "http"
+    port = 80
+  }
+
+  # Optionally pin zones. If omitted, GCE can spread across region zones.
+  # distribution_policy_zones = [
+  #   "us-west2-a",
+  #   "us-west2-b",
+  #   "us-west2-c"
+  # ]
+}
+
+# Autoscaling: min 3, max 5
+resource "google_compute_region_autoscaler" "autoscaler-uswest2" {
+  name   = "webserver-us-west2-autoscaler"
+  region = "us-west2"
+  target = google_compute_region_instance_group_manager.webserver-us-west2-mig.id
+
+  autoscaling_policy {
+    min_replicas = 3
+    max_replicas = 5
+
+    # Simple CPU target (optional tune)
+    cpu_utilization {
+      target = 0.6
+    }
+    cooldown_period = 60
+  }
+}
