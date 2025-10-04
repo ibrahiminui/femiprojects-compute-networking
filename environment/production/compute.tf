@@ -1,5 +1,5 @@
 
-/*
+
 # -----------------------------
 # Instance Template
 # -----------------------------
@@ -28,6 +28,7 @@ resource "google_compute_instance_template" "webserver-instance-template" {
     startup-script = <<-EOT
         #!/bin/bash
         # Install gsutil if not present (Ubuntu usually has it via google-cloud-sdk)
+        sudo su -
         apt-get update -y
         apt-get install -y google-cloud-sdk
 
@@ -162,5 +163,3 @@ resource "google_compute_global_forwarding_rule" "web_fr" {
   port_range            = "80"
   target                = google_compute_target_http_proxy.web_proxy.self_link
 }
-
-*/
