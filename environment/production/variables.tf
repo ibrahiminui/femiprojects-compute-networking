@@ -1,12 +1,10 @@
 variable "network_name" {
   description = "The GCP project you want to manage"
-  default     = "compute-us-west2-network"
   type        = string
 }
 
 variable "project_id" {
   description = "The GCP project you want to manage"
-  default     = "global-shared-networking"
   type        = string
 }
 
