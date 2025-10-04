@@ -5,6 +5,7 @@
 resource "google_compute_instance_template" "webserver-instance-template" {
   name         = "global-webserver-instance-template"
   machine_type = "e2-medium"
+  region       = "us-west2"
 
   disk {
     source_image = "projects/debian-cloud/global/images/family/debian-12"
