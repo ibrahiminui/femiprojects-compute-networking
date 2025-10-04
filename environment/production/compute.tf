@@ -37,9 +37,6 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
       export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       export DEBIAN_FRONTEND=noninteractive
 
-      # Helpful error context
-      trap 'rc=$?; echo "[ERROR] failed at line ${LINENO} (exit ${rc})"; exit $rc' ERR
-
       # Wait until apt/dpkg locks are free
       wait_for_apt() {
         while fuser /var/lib/dpkg/lock-frontend /var/cache/apt/archives/lock \
