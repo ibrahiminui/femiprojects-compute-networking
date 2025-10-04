@@ -103,3 +103,56 @@ resource "google_compute_region_autoscaler" "autoscaler-uswest2" {
   }
 }
 
+# -----------------------------
+# HTTP Health Check
+# -----------------------------
+resource "google_compute_health_check" "http" {
+  name = "http-hc"
+
+  http_health_check {
+    port         = 80
+    request_path = "/"
+  }
+
+  check_interval_sec  = 5
+  timeout_sec         = 5
+  healthy_threshold   = 2
+  unhealthy_threshold = 2
+}
+
+# -----------------------------
+# Backend Service (Global, External Managed)
+# -----------------------------
+resource "google_compute_backend_service" "web_be" {
+  name                  = "web-backend"
+  protocol              = "HTTP"
+  port_name             = "http"
+  load_balancing_scheme = "EXTERNAL_MANAGED"
+  health_checks         = [google_compute_health_check.http.self_link]
+  timeout_sec           = 30
+
+  backend {
+    group = google_compute_region_instance_group_manager.webserver-us-west2-mig.instance_group
+  }
+}
+
+# -----------------------------
+# URL Map, Target Proxy, Global Forwarding Rule
+# -----------------------------
+resource "google_compute_url_map" "web_map" {
+  name            = "web-url-map"
+  default_service = google_compute_backend_service.web_be.self_link
+}
+
+resource "google_compute_target_http_proxy" "web_proxy" {
+  name    = "web-http-proxy"
+  url_map = google_compute_url_map.web_map.self_link
+}
+
+resource "google_compute_global_forwarding_rule" "web_fr" {
+  name                  = "web-http-fr"
+  load_balancing_scheme = "EXTERNAL_MANAGED"
+  ip_protocol           = "TCP"
+  port_range            = "80"
+  target                = google_compute_target_http_proxy.web_proxy.self_link
+}
