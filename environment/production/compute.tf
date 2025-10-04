@@ -83,6 +83,7 @@ resource "google_compute_region_instance_group_manager" "webserver-us-west2-mig"
   # ]
 }
 
+/*
 # Autoscaling: min 3, max 5
 resource "google_compute_region_autoscaler" "autoscaler-uswest2" {
   name    = "webserver-us-west2-autoscaler"
@@ -101,3 +102,4 @@ resource "google_compute_region_autoscaler" "autoscaler-uswest2" {
     cooldown_period = 60
   }
 }
+*/
