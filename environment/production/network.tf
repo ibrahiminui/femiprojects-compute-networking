@@ -7,7 +7,7 @@ resource "google_compute_network" "compute_network" {
   auto_create_subnetworks = false
 }
 
-/*
+
 
 resource "google_compute_subnetwork" "compute_subnet" {
   provider = google-beta
@@ -46,5 +46,5 @@ resource "google_compute_subnetwork" "gke_subnet" {
     ip_cidr_range = "10.5.0.0/20"
   }
 }
-*/
+
 
