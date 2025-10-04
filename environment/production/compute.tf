@@ -64,7 +64,7 @@ resource "google_compute_region_instance_group_manager" "webserver-us-west2-mig"
   project            = var.gke-project
   base_instance_name = "webserver-mig-us-west2"
   version {
-    instance_template = google_compute_instance_template.webserver-instance-template.self_link
+    instance_template = google_compute_region_instance_template.webserver-instance-template.self_link
     name              = "primary"
   }
 
