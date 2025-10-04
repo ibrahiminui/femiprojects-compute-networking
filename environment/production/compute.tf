@@ -107,7 +107,8 @@ resource "google_compute_region_autoscaler" "autoscaler-uswest2" {
 # HTTP Health Check
 # -----------------------------
 resource "google_compute_health_check" "http" {
-  name = "http-hc"
+  name    = "http-hc"
+  project = var.gke-project
 
   http_health_check {
     port         = 80
@@ -125,6 +126,7 @@ resource "google_compute_health_check" "http" {
 # -----------------------------
 resource "google_compute_backend_service" "web_be" {
   name                  = "web-backend"
+  project               = var.gke-project
   protocol              = "HTTP"
   port_name             = "http"
   load_balancing_scheme = "EXTERNAL_MANAGED"
@@ -141,16 +143,19 @@ resource "google_compute_backend_service" "web_be" {
 # -----------------------------
 resource "google_compute_url_map" "web_map" {
   name            = "web-url-map"
+  project         = var.gke-project
   default_service = google_compute_backend_service.web_be.self_link
 }
 
 resource "google_compute_target_http_proxy" "web_proxy" {
   name    = "web-http-proxy"
+  project = var.gke-project
   url_map = google_compute_url_map.web_map.self_link
 }
 
 resource "google_compute_global_forwarding_rule" "web_fr" {
   name                  = "web-http-fr"
+  project               = var.gke-project
   load_balancing_scheme = "EXTERNAL_MANAGED"
   ip_protocol           = "TCP"
   port_range            = "80"
