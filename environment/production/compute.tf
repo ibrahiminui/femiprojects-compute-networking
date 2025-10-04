@@ -59,6 +59,7 @@ resource "google_compute_instance_template" "webserver-instance-template" {
 resource "google_compute_region_instance_group_manager" "webserver-us-west2-mig" {
   name               = "webserver-mig-us-west2"
   region             = "us-west2"
+  project      = var.gke-project
   base_instance_name = "web"
   version {
     instance_template = google_compute_instance_template.webserver-instance-template.self_link
@@ -86,6 +87,7 @@ resource "google_compute_region_instance_group_manager" "webserver-us-west2-mig"
 resource "google_compute_region_autoscaler" "autoscaler-uswest2" {
   name   = "webserver-us-west2-autoscaler"
   region = "us-west2"
+  project      = var.gke-project
   target = google_compute_region_instance_group_manager.webserver-us-west2-mig.id
 
   autoscaling_policy {
