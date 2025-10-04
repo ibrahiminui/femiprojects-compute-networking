@@ -13,9 +13,10 @@ resource "google_compute_instance_template" "webserver-instance-template" {
   }
 
   network_interface {
-    # Uses default VPC; optionally set subnetwork = "regions/us-west2/subnetworks/default"
-    network    = "projects/global-shared-networking/global/networks/compute-us-west2-network"
-    subnetwork = "projects/global-shared-networking/regions/us-west2/subnetworks/compute-us-west2-subnet"
+    subnetwork         = "compute-us-west2-subnet"
+    subnetwork_project = "global-shared-networking"
+
+
     # Assign an ephemeral external IP so instances can pull packages, etc.
     access_config {}
   }
