@@ -25,63 +25,59 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
   }
 
   metadata = {
-    startup-script = <<-EOT
-      #!/bin/bash
-      set -euo pipefail
+  startup-script = <<-EOT
+    #!/bin/bash
+    set -euo pipefail
 
-      # Log everything
-      exec > /var/log/startup-script.log 2>&1
-      echo "[INFO] Starting startup script at $(date)"
+    exec > /var/log/startup-script.log 2>&1
+    echo "[INFO] Starting startup script at $(date)"
 
-      # Known-good PATH for boot-time environment
-      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-      export DEBIAN_FRONTEND=noninteractive
+    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    export DEBIAN_FRONTEND=noninteractive
 
-      # Wait until apt/dpkg locks are free
-      wait_for_apt() {
-        while fuser /var/lib/dpkg/lock-frontend /var/cache/apt/archives/lock \
-                    /var/lib/apt/lists/lock >/dev/null 2>&1; do
-          echo "[INFO] apt/dpkg busy; waiting..."
-          sleep 3
-        done
-      }
+    trap 'rc=$?; echo "[ERROR] failed at line $${LINENO} (exit $${rc})"; exit $rc' ERR
 
-      # Retry helper for flaky network/package ops
-      retry() {
-        local n=0 max=5 delay=5
-        until "$@"; do
-          n=$((n+1))
-          if [ $n -ge $max ]; then
-            echo "[ERROR] Command failed after $n attempts: $*"
-            return 1
-          fi
-          echo "[WARN] Command failed. Attempt $n/$max. Retrying in $${delay}s..."
-          sleep "$delay"
-        done
-      }
+    wait_for_apt() {
+      while fuser /var/lib/dpkg/lock-frontend /var/cache/apt/archives/lock \
+                  /var/lib/apt/lists/lock >/dev/null 2>&1; do
+        echo "[INFO] apt/dpkg busy; waiting..."
+        sleep 3
+      done
+    }
 
-      # Update & install SDK (provides gsutil)
-      wait_for_apt
-      retry apt-get update -y
-      wait_for_apt
-      retry apt-get install -y google-cloud-sdk
+    retry() {
+      local n=0 max=5 delay=5
+      until "$@"; do
+        n=$((n+1))
+        if [ $n -ge $max ]; then
+          echo "[ERROR] Command failed after $n attempts: $*"
+          return 1
+        fi
+        echo "[WARN] Command failed. Attempt $n/$max. Retrying in $${delay}s..."
+        sleep "$delay"
+      done
+    }
 
-      # Workdir
-      mkdir -p /opt/websetup
-      cd /opt/websetup
+    wait_for_apt
+    retry apt-get update -y
+    wait_for_apt
+    retry apt-get install -y google-cloud-sdk
 
-      # Verify gsutil is present
-      command -v gsutil >/dev/null 2>&1 || { echo "[ERROR] gsutil missing after install"; exit 1; }
+    mkdir -p /opt/websetup
+    cd /opt/websetup
 
-      # Fetch installer from GCS (requires VM SA read perms)
-      retry gsutil cp "webserver-app/setup-web.sh" .
+    command -v gsutil >/dev/null 2>&1 || { echo "[ERROR] gsutil missing after install"; exit 1; }
 
-      chmod +x setup-web.sh
-      ./setup-web.sh
+    retry gsutil cp "gs://webserver-app/setup-web.sh" .
 
-      echo "[INFO] Startup script finished at $(date)"
-    EOT
-  }
+    chmod +x ./setup-web.sh
+    echo "[INFO] Running setup-web.sh..."
+    ./setup-web.sh
+
+    echo "[INFO] Startup script finished at $(date)"
+  EOT
+}
+
 
   # (Optional) service account scopes
   service_account {
