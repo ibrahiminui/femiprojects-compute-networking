@@ -25,7 +25,7 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
   }
 
   metadata = {
-  startup-script = <<-EOT
+    startup-script = <<-EOT
     #!/bin/bash
     set -euo pipefail
 
@@ -76,7 +76,7 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
 
     echo "[INFO] Startup script finished at $(date)"
   EOT
-}
+  }
 
 
   # (Optional) service account scopes
