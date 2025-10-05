@@ -24,60 +24,7 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
     access_config {}
   }
 
-  metadata = {
-    startup-script = <<-EOT
-    #!/bin/bash
-    set -euo pipefail
-
-    exec > /var/log/startup-script.log 2>&1
-    echo "[INFO] Starting startup script at $(date)"
-
-    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    export DEBIAN_FRONTEND=noninteractive
-
-    trap 'rc=$?; echo "[ERROR] failed at line $${LINENO} (exit $${rc})"; exit $rc' ERR
-
-    wait_for_apt() {
-      while fuser /var/lib/dpkg/lock-frontend /var/cache/apt/archives/lock \
-                  /var/lib/apt/lists/lock >/dev/null 2>&1; do
-        echo "[INFO] apt/dpkg busy; waiting..."
-        sleep 3
-      done
-    }
-
-    retry() {
-      local n=0 max=5 delay=5
-      until "$@"; do
-        n=$((n+1))
-        if [ $n -ge $max ]; then
-          echo "[ERROR] Command failed after $n attempts: $*"
-          return 1
-        fi
-        echo "[WARN] Command failed. Attempt $n/$max. Retrying in $${delay}s..."
-        sleep "$delay"
-      done
-    }
-
-    wait_for_apt
-    retry apt-get update -y
-    wait_for_apt
-    retry apt-get install -y google-cloud-sdk
-
-    mkdir -p /opt/websetup
-    cd /opt/websetup
-
-    command -v gsutil >/dev/null 2>&1 || { echo "[ERROR] gsutil missing after install"; exit 1; }
-
-    retry gsutil cp "gs://webserver-app/setup-web.sh" .
-
-    chmod +x ./setup-web.sh
-    echo "[INFO] Running setup-web.sh..."
-    ./setup-web.sh
-
-    echo "[INFO] Startup script finished at $(date)"
-  EOT
-  }
-
+  metadata_startup_script = file("${path.module}/startup.sh")
 
   # (Optional) service account scopes
   service_account {
