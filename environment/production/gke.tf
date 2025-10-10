@@ -1,41 +1,15 @@
 
-resource "google_container_cluster" "us-west2-gke-cluster" {
-  name     = "us-west2-gke-cluster"
-  location = var.region
-  project  = var.gke-project
+module "us-west2-gke-cluster" {
 
-  # We can't create a cluster with no node pool defined, but we want to only use
-  # separately managed node pools. So we create the smallest possible default
-  # node pool and immediately delete it.
-  remove_default_node_pool = true
-  initial_node_count       = 1
-  networking_mode          = "VPC_NATIVE"
-  network                  = var.shared-vpc-network
-  subnetwork               = var.shared-vpc-subnetwork
-  deletion_protection      = false
+source = "../../modules/gke-cluster"
+region = "us-west2"
 
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "gke-us-west2-subnet-pods"
-    services_secondary_range_name = "gke-us-west2-subnet-services"
-  }
 }
+
 
 resource "google_container_node_pool" "us-west2-gke-node-pool" {
   name       = "us-west2-gke-node-pool"
   location   = var.region
   cluster    = google_container_cluster.us-west2-gke-cluster.name
-  node_count = 1
-  project    = var.gke-project
 
-  node_config {
-    preemptible  = true
-    machine_type = "e2-medium"
-
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    service_account = "78332344851-compute@developer.gserviceaccount.com"
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-    disk_size_gb = "20"
-  }
 }
