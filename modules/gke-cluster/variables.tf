@@ -1,4 +1,12 @@
 
+variable "cluster-name" {
+  description = "The GKE cluster name"
+  default     = "us-west2-gke-cluster"
+  type        = string
+}
+
+
+
 variable "gke-project" {
   description = "The GCP project you want to manage"
   default     = "global-web-server-473500"
