@@ -1,9 +1,4 @@
 
-variable "cluster-name" {
-  description = "Name of GKE Cluster"
-  type        = string
-}
-
 variable "network_name" {
   description = "The GCP project you want to manage"
   type        = string
