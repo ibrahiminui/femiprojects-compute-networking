@@ -1,3 +1,4 @@
+
 variable "network_name" {
   description = "The GCP project you want to manage"
   type        = string

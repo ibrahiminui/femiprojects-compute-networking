@@ -19,3 +19,4 @@ resource "google_container_cluster" "us-west2-gke-cluster" {
     services_secondary_range_name = "gke-us-west2-subnet-services"
   }
 }
+

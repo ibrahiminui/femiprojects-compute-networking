@@ -1,5 +1,4 @@
 
-
 variable "gke-project" {
   description = "The GCP project you want to manage"
   default     = "global-web-server-473500"
