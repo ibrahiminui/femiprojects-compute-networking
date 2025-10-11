@@ -1,5 +1,5 @@
 
-variable "name" {
+variable "cluster-name" {
   description = "Name of GKE Cluster"
   type        = string
 }
