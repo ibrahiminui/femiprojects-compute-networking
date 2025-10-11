@@ -1,6 +1,6 @@
 
 resource "google_container_cluster" "us-west2-gke-cluster" {
-  name     = "us-west2-gke-cluster"
+  name     = var.name
   location = var.region
   project  = var.gke-project
 

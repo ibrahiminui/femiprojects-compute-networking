@@ -1,3 +1,11 @@
+
+variable "name" {
+  description = "name of gke cluster"
+  type        = string
+}
+
+
+
 variable "network_name" {
   description = "The GCP project you want to manage"
   type        = string
