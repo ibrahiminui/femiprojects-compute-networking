@@ -2,8 +2,6 @@
 module "us-west2-gke-cluster" {
 
   source = "../../modules/gke-cluster"
-  region = "us-west2"
-
 }
 
 
@@ -13,3 +11,4 @@ resource "google_container_node_pool" "us-west2-gke-node-pool" {
   cluster  = module.us-west2-gke-cluster.gke-cluster-name
 
 }
+

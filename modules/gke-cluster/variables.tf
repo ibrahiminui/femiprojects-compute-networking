@@ -9,6 +9,7 @@ variable "gke-project" {
 variable "region" {
   type        = string
   description = "Default Google Cloud region"
+  default     = "us-west2"
 }
 
 variable "shared-vpc-subnetwork" {
