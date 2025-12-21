@@ -12,7 +12,7 @@ resource "google_container_cluster" "us-west2-gke-cluster" {
   networking_mode          = "VPC_NATIVE"
   network                  = var.shared-vpc-network
   subnetwork               = var.shared-vpc-subnetwork
-  deletion_protection      = var.deletion_protection
+  deletion_protection      = false
 
   /*
   private_cluster_config {
