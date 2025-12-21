@@ -19,7 +19,7 @@ resource "google_container_node_pool" "us-west2-gke-node-pool" {
   node_count = 1
   project    = var.gke-project
 
-    
+
 
 
   node_config {
