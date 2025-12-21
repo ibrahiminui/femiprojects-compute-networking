@@ -14,9 +14,21 @@ resource "google_container_cluster" "us-west2-gke-cluster" {
   subnetwork               = var.shared-vpc-subnetwork
   deletion_protection      = false
 
+    private_cluster_config {
+    enable_private_endpoint = true
+    enable_private_nodes   = true 
+    master_ipv4_cidr_block = "10.13.0.0/28"
+  }
+
   ip_allocation_policy {
     cluster_secondary_range_name  = "gke-us-west2-subnet-pods"
     services_secondary_range_name = "gke-us-west2-subnet-services"
   }
+
+  master_authorized_networks_config {
+    cidr_blocks {
+      cidr_block   = "10.0.2.0/24"
+      display_name = "network admin"
+    }
 }
 
