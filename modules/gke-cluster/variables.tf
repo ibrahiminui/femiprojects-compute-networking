@@ -5,7 +5,11 @@ variable "cluster-name" {
   type        = string
 }
 
-
+variable "deletion_protection" {
+  description = "The GCP project you want to manage"
+  default     = "false"
+  type        = string
+}
 
 variable "gke-project" {
   description = "The GCP project you want to manage"

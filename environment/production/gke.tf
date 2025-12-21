@@ -6,6 +6,7 @@ module "us-west2-gke-cluster" {
   region                = "us-west2"
   shared-vpc-subnetwork = "projects/global-shared-networking/regions/us-west2/subnetworks/gke-us-west2-subnet"
   shared-vpc-network    = "projects/global-shared-networking/global/networks/compute-us-west2-network"
+  deletion_protection   = false
 
   depends_on = [
     google_compute_subnetwork.gke_subnet
