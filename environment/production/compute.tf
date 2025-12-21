@@ -4,7 +4,7 @@
 # Instance Template
 # -----------------------------
 resource "google_compute_region_instance_template" "webserver-instance-template" {
-  name         = "global-webserver-instance-template"
+  name_prefix  = "global-webserver-instance-template-"
   machine_type = "e2-medium"
   region       = "us-west2"
   project      = var.gke-project
