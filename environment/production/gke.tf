@@ -16,7 +16,7 @@ resource "google_container_node_pool" "us-west2-gke-node-pool" {
   name       = "us-west2-gke-node-pool"
   location   = var.region
   cluster    = module.us-west2-gke-cluster.gke-cluster-name
-  node_count = 1
+  node_count = 2
   project    = var.gke-project
 
   node_config {
