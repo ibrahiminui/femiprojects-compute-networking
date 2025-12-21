@@ -32,6 +32,10 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   depends_on = [
     google_compute_subnetwork.compute_subnet
   ]
