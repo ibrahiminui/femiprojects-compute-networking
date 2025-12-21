@@ -21,7 +21,7 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
 
 
     # Assign an ephemeral external IP so instances can pull packages, etc.
-    access_config {}
+    # access_config {}
   }
 
   metadata_startup_script = file("${path.module}/startup.sh")
