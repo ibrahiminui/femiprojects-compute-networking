@@ -31,6 +31,10 @@ resource "google_compute_region_instance_template" "webserver-instance-template"
     email  = "78332344851-compute@developer.gserviceaccount.com"
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
+
+  depends_on = [
+    google_compute_subnetwork.compute_subnet
+  ]
 }
 
 
