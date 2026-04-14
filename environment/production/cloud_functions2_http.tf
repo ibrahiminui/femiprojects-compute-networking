@@ -1,5 +1,5 @@
 module "cloud_function" {
-  source = "../../modules/cloud_function"
+  source = "../../modules/cloud-function-terraform-module/modules/cloud_function"
 
   project_id     = var.project_id
   region         = var.region
@@ -49,7 +49,7 @@ variable "function_name" {
 variable "source_dir" {
   description = "Path to the local source code folder containing main.py and requirements.txt"
   type        = string
-  default     = "../../modules/function_source/function_source_http"
+  default     = "../modules/cloud-function-terraform-module/function_source/function_source_http"
 }
 
 variable "bucket_name" {
