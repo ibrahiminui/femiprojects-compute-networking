@@ -1,5 +1,5 @@
 module "cloud_function" {
-  source = "../../modules/cloud-function-terraform-module/modules/cloud_function"
+  source = "../../modules/cloud_function"
 
   project_id     = var.project_id
   region         = var.region
