@@ -25,16 +25,15 @@ module "cloud_function" {
 }
 
 resource "google_vpc_access_connector" "function_connector" {
-  name          = "cf-connector-vpc"
+  name          = "usw2-conn"
   project       = var.project_id
   region        = var.region
+  network       = var.vpc_network
+  ip_cidr_range = "10.8.0.0/28"
+
   machine_type  = "e2-micro"
   min_instances = 2
   max_instances = 3
-
-  subnet {
-    name = var.vpc_subnetwork
-  }
 }
 
 output "function_name" {
