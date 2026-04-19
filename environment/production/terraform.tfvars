@@ -17,5 +17,5 @@ labels = {
   env = "dev"
 }
 
-vpc_network       = "compute-us-west2-network"
-vpc_subnetwork    = "compute-us-west2-subnet"
+vpc_network    = "compute-us-west2-network"
+vpc_subnetwork = "compute-us-west2-subnet"
