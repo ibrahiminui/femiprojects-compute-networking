@@ -19,7 +19,7 @@ module "cloud_function" {
   timeout_seconds              = 60
   max_instance_count           = 2
   min_instance_count           = 0
-  ingress_settings             = "ALLOW_INTERNAL_ONLY"
+  ingress_settings             = "ALLOW_INTERNAL_AND_GCLB"
 }
 
 
