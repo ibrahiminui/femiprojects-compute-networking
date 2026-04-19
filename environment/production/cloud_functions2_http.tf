@@ -9,7 +9,7 @@ module "cloud_function" {
   invoker_member                = var.invoker_member
   labels                        = var.labels
   vpc_connector                 = google_vpc_access_connector.function_connector.id
-  vpc_connector_egress_settings = "ALL TRAFFIC"
+  vpc_connector_egress_settings = "ALL_TRAFFIC"
 
   # Optional overrides
   description                  = "HTTP Cloud Function for SI-10 input validation"
