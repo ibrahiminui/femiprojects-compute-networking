@@ -94,18 +94,22 @@ variable "labels" {
   default     = {}
 }
 
-variable "vpc_network" {
-  description = "VPC network name or self_link for Direct VPC egress"
+variable "vpc_connector" {
+  description = "Full name of the Serverless VPC Access connector"
   type        = string
+  default     = null
 }
 
-variable "vpc_subnetwork" {
-  description = "Subnetwork name or self_link for Direct VPC egress"
+variable "vpc_connector_egress_settings" {
+  description = "Egress setting for the VPC connector"
   type        = string
-}
+  default     = "PRIVATE_RANGES_ONLY"
 
-variable "direct_vpc_egress" {
-  description = "Direct VPC egress mode"
-  type        = string
-  default     = "VPC_EGRESS_PRIVATE_RANGES_ONLY"
+  validation {
+    condition = contains([
+      "PRIVATE_RANGES_ONLY",
+      "ALL_TRAFFIC"
+    ], var.vpc_connector_egress_settings)
+    error_message = "vpc_connector_egress_settings must be either PRIVATE_RANGES_ONLY or ALL_TRAFFIC."
+  }
 }

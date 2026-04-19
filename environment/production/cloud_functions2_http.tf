@@ -1,16 +1,15 @@
 module "cloud_function" {
   source = "../../modules/cloud-function-terraform-module/modules/cloud_function"
 
-  project_id        = var.project_id
-  region            = var.region
-  function_name     = var.function_name
-  source_dir        = var.source_dir
-  bucket_name       = var.bucket_name
-  invoker_member    = var.invoker_member
-  labels            = var.labels
-  direct_vpc_egress = var.direct_vpc_egress
-  vpc_network       = var.vpc_network
-  vpc_subnetwork    = var.vpc_subnetwork
+  project_id                    = var.project_id
+  region                        = var.region
+  function_name                 = var.function_name
+  source_dir                    = var.source_dir
+  bucket_name                   = var.bucket_name
+  invoker_member                = var.invoker_member
+  labels                        = var.labels
+  vpc_connector                 = google_vpc_access_connector.function_connector.id
+  vpc_connector_egress_settings = "ALL TRAFFIC"
 
   # Optional overrides
   description                  = "HTTP Cloud Function for SI-10 input validation"
@@ -25,6 +24,18 @@ module "cloud_function" {
   ingress_settings             = "ALLOW_INTERNAL_AND_GCLB"
 }
 
+resource "google_vpc_access_connector" "function_connector" {
+  name          = "compute-us-west2-connector"
+  project       = var.project_id
+  region        = var.region
+  machine_type  = "e2-micro"
+  min_instances = 2
+  max_instances = 3
+
+  subnet {
+    name = var.vpc_subnetwork
+  }
+}
 
 output "function_name" {
   value = module.cloud_function.function_name
@@ -84,9 +95,5 @@ variable "vpc_subnetwork" {
   type        = string
 }
 
-variable "direct_vpc_egress" {
-  description = "Direct VPC egress mode"
-  type        = string
-  default     = "VPC_EGRESS_PRIVATE_RANGES_ONLY"
-}
+
 

@@ -17,6 +17,5 @@ labels = {
   env = "dev"
 }
 
-direct_vpc_egress = "PRIVATE_RANGES_ONLY"
 vpc_network       = "compute-us-west2-network"
 vpc_subnetwork    = "compute-us-west2-subnet"
