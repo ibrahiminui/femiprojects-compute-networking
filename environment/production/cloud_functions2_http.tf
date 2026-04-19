@@ -25,7 +25,7 @@ module "cloud_function" {
 }
 
 resource "google_vpc_access_connector" "function_connector" {
-  name          = "compute-us-west2-connector"
+  name          = "cf-connector-vpc"
   project       = var.project_id
   region        = var.region
   machine_type  = "e2-micro"
