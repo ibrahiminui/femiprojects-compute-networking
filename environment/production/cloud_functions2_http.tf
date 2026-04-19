@@ -1,16 +1,16 @@
 module "cloud_function" {
   source = "../../modules/cloud-function-terraform-module/modules/cloud_function"
 
-  project_id     = var.project_id
-  region         = var.region
-  function_name  = var.function_name
-  source_dir     = var.source_dir
-  bucket_name    = var.bucket_name
-  invoker_member = var.invoker_member
-  labels         = var.labels
+  project_id        = var.project_id
+  region            = var.region
+  function_name     = var.function_name
+  source_dir        = var.source_dir
+  bucket_name       = var.bucket_name
+  invoker_member    = var.invoker_member
+  labels            = var.labels
   direct_vpc_egress = var.direct_vpc_egress
-  vpc_network = var.vpc_network
-  vpc_subnetwork = var.vpc_subnetwork
+  vpc_network       = var.vpc_network
+  vpc_subnetwork    = var.vpc_subnetwork
 
   # Optional overrides
   description                  = "HTTP Cloud Function for SI-10 input validation"
