@@ -24,16 +24,25 @@ module "cloud_function" {
   ingress_settings             = "ALLOW_INTERNAL_AND_GCLB"
 }
 
+resource "google_compute_subnetwork" "connector_subnet" {
+  name          = "svpc-usw2-subnet"
+  project       = var.project_id
+  region        = var.region
+  network       = "projects/${var.project_id}/global/networks/${var.vpc_network}"
+  ip_cidr_range = "10.8.0.0/28"
+}
+
 resource "google_vpc_access_connector" "function_connector" {
   name          = "usw2-conn"
   project       = var.project_id
   region        = var.region
-  network       = var.vpc_network
-  ip_cidr_range = "10.8.0.0/28"
-
   machine_type  = "e2-micro"
   min_instances = 2
   max_instances = 3
+
+  subnet {
+    name = google_compute_subnetwork.connector_subnet.name
+  }
 }
 
 output "function_name" {
