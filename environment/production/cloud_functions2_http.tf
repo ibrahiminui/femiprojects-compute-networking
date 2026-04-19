@@ -8,6 +8,9 @@ module "cloud_function" {
   bucket_name    = var.bucket_name
   invoker_member = var.invoker_member
   labels         = var.labels
+  direct_vpc_egress = var.direct_vpc_egress
+  vpc_network = var.vpc_network
+  vpc_subnetwork = var.vpc_subnetwork
 
   # Optional overrides
   description                  = "HTTP Cloud Function for SI-10 input validation"
@@ -69,5 +72,21 @@ variable "labels" {
     app = "si10-validation"
     env = "dev"
   }
+}
+
+variable "vpc_network" {
+  description = "VPC network name or self_link for Direct VPC egress"
+  type        = string
+}
+
+variable "vpc_subnetwork" {
+  description = "Subnetwork name or self_link for Direct VPC egress"
+  type        = string
+}
+
+variable "direct_vpc_egress" {
+  description = "Direct VPC egress mode"
+  type        = string
+  default     = "VPC_EGRESS_PRIVATE_RANGES_ONLY"
 }
 

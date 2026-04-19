@@ -82,6 +82,12 @@ resource "google_cloudfunctions2_function" "function" {
     ingress_settings               = var.ingress_settings
     all_traffic_on_latest_revision = true
     service_account_email          = google_service_account.function_sa.email
+    direct_vpc_egress = var.direct_vpc_egress
+
+    direct_vpc_network_interface {
+      network    = var.vpc_network
+      subnetwork = var.vpc_subnetwork
+    }
   }
 
   depends_on = [

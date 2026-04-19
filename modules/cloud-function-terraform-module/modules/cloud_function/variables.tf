@@ -93,3 +93,19 @@ variable "labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "vpc_network" {
+  description = "VPC network name or self_link for Direct VPC egress"
+  type        = string
+}
+
+variable "vpc_subnetwork" {
+  description = "Subnetwork name or self_link for Direct VPC egress"
+  type        = string
+}
+
+variable "direct_vpc_egress" {
+  description = "Direct VPC egress mode"
+  type        = string
+  default     = "VPC_EGRESS_PRIVATE_RANGES_ONLY"
+}
